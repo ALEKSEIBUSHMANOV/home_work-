@@ -1,68 +1,31 @@
 
-with open("1.txt", 'r', encoding='utf-8') as f1:
-    count_1 = 0
-    for i in f1:
-        count_1 = count_1+1
-    f1.seek(0)
-    a = f1.read()
+import glob
 
-with open("2.txt", 'r', encoding='utf-8') as f2:
-    count_2 = 0
-    for i in f2:
-        count_2 = count_2 + 1
-    f2.seek(0)
-    b = f2.read()
+dict_text = {}
+n = 0
+for filename in glob.glob('*.txt'): # в цикле получаем все файлы в формате txt в директории
 
-with open("3.txt", 'r', encoding='utf-8') as f3:
-    count_3 = 0
-    for i in f3:
-        count_3 = count_3 + 1
-    f3.seek(0)
-    c = f3.read()
+    with open(filename, 'r', encoding='utf-8') as f1:
 
-with open("file.txt", 'w', encoding='utf-8') as f:
-    if count_2 < count_1 < count_3:
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-    elif count_1 < count_2 < count_3:
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-    elif count_1 < count_3 < count_2:
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-    elif count_2 < count_3 < count_1:
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
-    elif count_3 < count_1 < count_2:
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-    elif count_3 < count_2 < count_1:
-        f.write(f'3.txt\n {count_3}\n')
-        f.write(c)
-        f.write(f'2.txt\n {count_2}\n')
-        f.write(b)
-        f.write(f'1.txt\n {count_1}\n')
-        f.write(a)
+        a = filename # переменно а присваиваем название файла
+        b = sum(1 for line in f1) # переменной b  присваиваем количество строк в тексте
+        f1.seek(0) # возвращаем дескриптор на начало файла
+        c = f1.read() # переменной с присваиваем содержимое файла
+        n = n + 1 # переменная n увеличивется на 1 и числовое значение
+        # будет использоваться как ключ в словаре, чтобы названия ключей не повторялись
+        dict_text[n] =  b, a, c # создаем словарь, где ключами являются разные числовые значения
+coll = sorted(dict_text.values()) # сортируем полученный словарь по значениям.
+# Возвращается список кортежей, в которых на первом месте количество строк,
+# на втором - название текста, на третьем - содержимое текста
+for element in coll:
+    with open("file.txt", 'a', encoding='utf-8') as f: # открываем файл для записи
+     # циклом проходимся по значениям отсортированного словаря
+        f.write((str(element[1])) + "\n") # в файл записываем в строковом виде
+        # элементы кортежа - название файла
+        f.write((str(element[0])) + "\n")# в файл записываем в строковом виде
+        # элементы кортежа - количество строк
+        f.write(str(element[2]) + "\n")# в файл записываем в строковом виде
+        # элементы кортежа - содержание
 
 
 
